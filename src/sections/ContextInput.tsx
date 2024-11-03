@@ -27,6 +27,7 @@ export const ContextInput = ({ isDataLoaded }: Props) => {
     e.preventDefault();
     const formData = new FormData(e.target);
 
+    
     story.startLoadingResponse();
 
     const response = await initStoryApi({
@@ -55,6 +56,7 @@ export const ContextInput = ({ isDataLoaded }: Props) => {
           <Textarea
             disabled={Boolean(story.id)}
             name="context"
+            defaultValue={story.context}
             className="max-w-[90%] resize-none"
             maxLength={1200}
           />

@@ -36,6 +36,7 @@ type StoryStoreState = {
     hero_name?: string
     enemy?: string
     enemy_name?: string
+    context?: string,
     lang: string,
     story_acts: StoryActs[]
     isDataLoaded: boolean,
@@ -47,6 +48,7 @@ type StoryStoreActions = {
     setCharacter: (character: string) => void
     setStoryId: (id: number) => void
     setDataLoaded: () => void
+    setContext: (context: string) => void
     startLoadingResponse: () => void,
     setInitStory: ({ enemy, hero_name, enemy_name }: { enemy: string, hero_name: string, enemy_name: string }) => void
 }
@@ -86,6 +88,9 @@ export const useStoryStore = create(persist(subscribeWithSelector<StoryStore>(
         },
         setStoryId: (id: number) => {
             set(state => ({ ...state, id }))
+        },
+        setContext: (context: string) => {
+            set(state => ({ ...state, context }))
         },
         setDataLoaded: () => { set((state) => ({ ...state, story_acts: state.story_acts.map((act) => ({ ...act, isDataLoaded: true })) })) },
         setInitStory({ hero_name, enemy_name, enemy }) {

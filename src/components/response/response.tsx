@@ -24,9 +24,10 @@ const Response = ({
   const ref = useRef<HTMLDivElement>(null);
 
   const [displayText, helper] = useTypewriter({
-    words: [text],
+    words: [isDataLoaded ? "" : text],
     delaySpeed: 100,
     typeSpeed: 10,
+
     onType: () => {
       if (isLastReponse) {
         ref.current?.scrollIntoView({ behavior: "smooth" });

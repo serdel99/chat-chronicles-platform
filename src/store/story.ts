@@ -14,6 +14,10 @@ export type PollResponse = {
     }[]
 }
 
+type Powerup = {
+    user_name: string, type: "ENEMY_DEFENSE" | "ENEMY_POWER_ATTACK_UP" | "HERO_DEFENSE" | "HERO_POWER_ATTACK_UP"
+}
+
 type StoryActs = {
     data?: {
         next_history: string
@@ -38,13 +42,22 @@ type StoryStoreState = {
     enemy_name?: string
     context?: string,
     lang: string,
+    powerups: {
+        "ENEMY_DEFENSE": Powerup[],
+        "ENEMY_POWER_ATTACK_UP": Powerup[],
+        "HERO_DEFENSE": Powerup[]
+        "HERO_POWER_ATTACK_UP": Powerup[]
+    },
     story_acts: StoryActs[]
     isDataLoaded: boolean,
 }
 
+
+
 type StoryStoreActions = {
     addResponse: (Response: Omit<StoryActs, "isLoading">) => void
     addPollResponse: (pollId: string, response: PollResponse) => void,
+    addPowerUp: (powerup: Powerup) => void,
     setCharacter: (character: string) => void
     setStoryId: (id: number) => void
     setDataLoaded: () => void
@@ -53,7 +66,7 @@ type StoryStoreActions = {
     setInitStory: ({ enemy, hero_name, enemy_name }: { enemy: string, hero_name: string, enemy_name: string }) => void
 }
 
-type StoryStore = StoryStoreState & StoryStoreActions
+export type StoryStore = StoryStoreState & StoryStoreActions
 
 export const useStoryStore = create(persist(subscribeWithSelector<StoryStore>(
     (set) => ({
@@ -61,6 +74,12 @@ export const useStoryStore = create(persist(subscribeWithSelector<StoryStore>(
         storyId: undefined,
         story_acts: [],
         isDataLoaded: false,
+        powerups: {
+            "ENEMY_DEFENSE": [],
+            "ENEMY_POWER_ATTACK_UP": [],
+            "HERO_DEFENSE": [],
+            "HERO_POWER_ATTACK_UP": []
+        },
         addPollResponse: (pollId, response) => {
             set(state => {
                 const updatedActs = state.story_acts.map((storyAct) => {
@@ -72,7 +91,7 @@ export const useStoryStore = create(persist(subscribeWithSelector<StoryStore>(
             })
         },
         startLoadingResponse: () => {
-            set((state) => ({ ...state, story_acts: [...state.story_acts, { isLoading: true }] }))
+            set((state) => ({ ...state, story_acts: [...state.story_acts, { isLoading: true, powerups: [] }] }))
         },
         addResponse: (response) => {
             set((state) => ({
@@ -81,6 +100,12 @@ export const useStoryStore = create(persist(subscribeWithSelector<StoryStore>(
                         return { ...response, isLoading: false, }
                     } return act
                 })
+            }))
+        },
+        addPowerUp: (powerup) => {
+            set(state => ({
+                ...state,
+                powerups: { ...state.powerups, [powerup.type]: [...state.powerups[powerup.type], powerup] },
             }))
         },
         setCharacter: (character: string) => {

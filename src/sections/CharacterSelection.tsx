@@ -16,7 +16,11 @@ export const GallerySelection = ({ isDataLoaded }: Props) => {
   const story = useStoryStore();
 
   return (
-    <Response text={t("welcome")} isDataLoaded={Boolean(story.hero)}>
+    <Response
+      text={t("welcome")}
+      isDataLoaded={Boolean(story.hero)}
+      isLoading={false}
+    >
       <div className="mt-5 grid grid-cols-3 gap-5 justify-items-center">
         {Object.values(characters).map((data) => {
           return (

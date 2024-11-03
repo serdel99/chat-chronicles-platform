@@ -1,23 +1,27 @@
-import { useValidateAuth } from "./hooks/useValidateAuth";
+import { useEffect } from "react";
+
 import { GallerySelection } from "@/sections/CharacterSelection";
 import { ContextInput } from "@/sections/ContextInput";
-import { useStoryStore } from "./store/story";
-import { OptionSelection } from "./sections/OptionSelection";
-import { useEffect } from "react";
-import { FinishStorySelection } from "./sections/FinishStorySection";
+import { FinishStorySelection } from "@/sections/FinishStorySection";
+import { useValidateAuth } from "@/hooks/useValidateAuth";
+import { useStoryStore } from "@/store/story";
+import { OptionSelection } from "@/sections/OptionSelection";
+
+import { useUserStore } from "./store/user";
+import { handleServerEvent, ServerEvents } from "./store/utils";
 
 const App = () => {
+  const user = useUserStore();
   const story = useStoryStore();
 
   useEffect(() => {
     if (story.id) {
       const evtSource = new EventSource(
-        `http://localhost:3000/story/storyEvents?storyId=${story.id}`
+        `http://localhost:3000/story/storyEvents?userId=${user.id}`
       );
       evtSource.onmessage = (event) => {
-        const pollEvent = JSON.parse(event.data);
-        console.log(pollEvent);
-        story.addPollResponse(pollEvent.id, pollEvent);
+        const parsedEvent = JSON.parse(event.data) as ServerEvents;
+        handleServerEvent(story, parsedEvent);
       };
       evtSource.onopen = () => {
         console.log("Open sse");
@@ -27,8 +31,6 @@ const App = () => {
   }, [story.id]);
 
   useValidateAuth();
-
-  console.log(story.isDataLoaded);
 
   return (
     <div className="mt-10 mx-auto flex-1 gap-4 text-base md:gap-5 lg:gap-6 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem]">
@@ -43,6 +45,7 @@ const App = () => {
 
           return (
             <Component
+              powerups={story.powerups}
               key={id}
               response={pollResponse}
               action={data?.action!}

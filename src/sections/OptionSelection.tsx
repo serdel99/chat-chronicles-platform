@@ -1,7 +1,7 @@
 import { FormEventHandler, Fragment, useId, useState } from "react";
 import { Response } from "@/components/response/response";
 import { useAxios, GenerateActResponse } from "@/services/api";
-import { PollResponse, useStoryStore } from "@/store/story";
+import { PollResponse, StoryStore, useStoryStore } from "@/store/story";
 import { useFocusResponse } from "@/hooks/useFocusResponse";
 import {
   Card,
@@ -29,6 +29,7 @@ type Props = {
   isDataLoaded?: boolean;
   isLoading: boolean;
   isLastResponse: boolean;
+  powerups: StoryStore["powerups"];
 };
 
 export const OptionSelection = ({
@@ -45,6 +46,7 @@ export const OptionSelection = ({
   enemyName,
   isLoading,
   isLastResponse,
+  powerups,
 }: Props) => {
   const story = useStoryStore();
   const element = useFocusResponse();
@@ -80,6 +82,7 @@ export const OptionSelection = ({
       >
         <div className="my-4">
           <Battle
+            powerups={powerups}
             enemyName={enemyName!}
             enemy={enemy!}
             enemyhealth={enemyHealt!}

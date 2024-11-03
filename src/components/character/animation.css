@@ -1,0 +1,39 @@
+:root {
+  --pixel-size: 1;
+}
+
+#ch-default {
+  height: calc(128px * var(--pixel-size));
+  width: calc(120px * var(--pixel-size));
+  overflow: hidden;
+}
+
+#ch-default-sprite {
+  max-width: none;
+  image-rendering: pixelated;
+}
+
+.steps-5 {
+  animation: idle 1s steps(5) infinite;
+}
+
+.steps-6 {
+  animation: idle 1s steps(6) infinite;
+}
+
+.steps-7 {
+  animation: idle 1s steps(7) infinite;
+}
+
+.steps-9 {
+  animation: idle 1s steps(9) infinite;
+}
+
+@keyframes idle {
+  from {
+    transform: translate3d(0px, 0, 0);
+  }
+  to {
+    transform: translate3d(-100%, 0, 0);
+  }
+}

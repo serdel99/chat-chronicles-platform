@@ -29,7 +29,6 @@ const CharacterCard = ({
   damageCount: number;
   defenseCount: number;
 }) => {
-  console.log(character);
   return (
     <div
       className={`flex flex-col items-center ${

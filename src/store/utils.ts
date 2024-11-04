@@ -38,8 +38,6 @@ const isPollEvent = (event: ServerEvents): event is PollEndEvent => {
 
 export const handleServerEvent = (story: StoryStore, event: RewardRedemptionEvent | PollEndEvent) => {
 
-    console.log(event)
-
     if (isPollEvent(event)) {
         return story.addPollResponse(event.id, event);
     }

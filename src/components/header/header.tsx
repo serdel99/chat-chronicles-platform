@@ -15,7 +15,6 @@ const Header = () => {
     (state) => state.access_token,
     () => {
       getUserInfo().then(({ data }) => {
-        console.log(data.data);
         userStore.addUser(data.data[0]);
       });
     }

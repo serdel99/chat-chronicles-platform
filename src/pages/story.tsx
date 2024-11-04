@@ -20,7 +20,7 @@ export const Story = () => {
   const story = useStoryStore();
   const storyList = useStoryList();
 
-  useEffect(() => {
+  useEffect(()  g=> {
     if (match) {
       const storyLoad = storyList.stories[params.id as unknown as number];
       story.loadStory({ ...storyLoad, isDataLoaded: true });

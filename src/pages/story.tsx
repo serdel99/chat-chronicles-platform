@@ -20,7 +20,7 @@ export const Story = () => {
   const story = useStoryStore();
   const storyList = useStoryList();
 
-  useEffect(()  g=> {
+  useEffect(() => {
     if (match) {
       const storyLoad = storyList.stories[params.id as unknown as number];
       story.loadStory({ ...storyLoad, isDataLoaded: true });
@@ -44,6 +44,7 @@ export const Story = () => {
   }, [story.id]);
 
   useValidateAuth();
+
 
   return (
     <div className="mt-10 mx-auto flex-1 gap-4 text-base md:gap-5 lg:gap-6 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem]">

@@ -16,13 +16,14 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { ChevronUp } from "lucide-react";
+import { ChevronUp, Swords } from "lucide-react";
 import { useUserStore } from "@/store/user";
 import { useTwitchApi } from "@/services/twitch";
 import { Button } from "../ui/button";
 import { redirectTwichAuth } from "@/hooks/useValidateAuth";
 import { useStoryList } from "@/store/storyList";
 import { useLocation } from "wouter";
+import { useTranslation } from "react-i18next";
 
 export function AppSidebar() {
   const [_location, navigate] = useLocation();
@@ -31,6 +32,7 @@ export function AppSidebar() {
     { manual: true }
   );
 
+  const { t } = useTranslation();
   const storyList = useStoryList();
 
   const userStore = useUserStore();
@@ -63,7 +65,8 @@ export function AppSidebar() {
               window.location.replace("/");
             }}
           >
-            New Story
+            <Swords />
+            {t("newbattle")}
           </Button>
         </SidebarGroup>
         <SidebarGroup>

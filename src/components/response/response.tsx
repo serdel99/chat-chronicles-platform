@@ -35,7 +35,11 @@ const Response = ({
     },
     onLoopDone: () => {
       if (isLastReponse) {
-        ref.current?.scrollIntoView({ behavior: "smooth" });
+        window.scrollTo({
+          left: 0,
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        });
       }
     },
   });
@@ -64,7 +68,14 @@ const Response = ({
           )}
           {!isLoading && (
             <>
-              <Markdown>{isDataLoaded ? text : displayText}</Markdown>
+              <Markdown
+                components={{
+                  p: ({ children }) => <p className="mt-3">{children}</p>,
+                  li: ({ children }) => <li className="mt-3 ">{children}</li>,
+                }}
+              >
+                {isDataLoaded ? text : displayText}
+              </Markdown>
               <AnimatePresence>
                 {(helper.isDone || isDataLoaded) && (
                   <motion.div

@@ -67,6 +67,7 @@ export const OptionSelection = ({
     const responseApi = await generate({
       data: {
         selectedOption: winnerOption?.title,
+        lang: story.lang,
       },
     });
     story.addResponse(responseApi.data);

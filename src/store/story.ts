@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist, createJSONStorage, subscribeWithSelector } from 'zustand/middleware'
+import { subscribeWithSelector } from 'zustand/middleware'
 
 
 export type PollResponse = {
@@ -69,7 +69,7 @@ type StoryStoreActions = {
 export type StoryStore = StoryStoreState & StoryStoreActions
 
 const initalStore = {
-    lang: window.navigator.language || 'en',
+    lang: window.navigator?.language || 'en',
     storyId: undefined,
     story_acts: [],
     isDataLoaded: false,

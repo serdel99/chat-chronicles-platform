@@ -35,6 +35,7 @@ export const ContextInput = ({ isDataLoaded }: Props) => {
       data: {
         hero: story.hero,
         context: formData.get("context"),
+        lang: story.lang,
       },
     });
     story.setStoryId(response.data.id);
@@ -51,6 +52,7 @@ export const ContextInput = ({ isDataLoaded }: Props) => {
       text={t("context")}
       isDataLoaded={Boolean(story.id)}
       isLoading={false}
+      isLastReponse={!story.id}
     >
       <form onSubmit={handleOnSubmit}>
         <div className="flex justify-end  mt-10">

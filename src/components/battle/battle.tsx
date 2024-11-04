@@ -43,7 +43,11 @@ const CharacterCard = ({
       <div className="flex flex-col items-center">
         <h2 className="text-xl font-boldmb-2">{name}</h2>
         <div className="w-32">
-          <Progress value={health} className="h-3" />
+          <Progress
+            value={health}
+            className="h-3"
+            color={reversed ? "bg-rose-900" : "bg-green-900"}
+          />
         </div>
         <p className="mt-2 text-sm">{health}% HP</p>
         <PowerupsDisplay

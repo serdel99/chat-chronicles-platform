@@ -5,9 +5,11 @@ import axios from 'axios'
 
 import { useUserStore } from '@/store/user'
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export const useAxios = makeUseAxios({
     axios: axios.create({
-        baseURL: 'http://localhost:3000',
+        baseURL: API_URL,
 
         transformRequest: function (data, headers) {
             const { id_token, access_token } = useUserStore.getState()

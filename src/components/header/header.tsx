@@ -1,8 +1,7 @@
 import { useUserStore } from "@/store/user";
-import { supabase } from "@/services/supabase";
 import { redirectTwichAuth } from "@/hooks/useValidateAuth";
 import { Button } from "../ui/button";
-import { useTwitchApi, GetUserReponse } from "@/services/twitch";
+import { useTwitchApi } from "@/services/twitch";
 
 const Header = () => {
   const [_, getUserInfo] = useTwitchApi(
@@ -26,8 +25,6 @@ const Header = () => {
     redirectTwichAuth();
   };
 
-
-  
   return (
     <header className="flex shadow-md py-4 px-4 sm:px-10  min-h-[70px]  relative z-50">
       <div className="flex flex-wrap justify-between items-center w-full">

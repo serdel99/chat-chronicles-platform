@@ -12,6 +12,8 @@ import { handleServerEvent, ServerEvents } from "../store/utils";
 import { useRoute } from "wouter";
 import { useStoryList } from "@/store/storyList";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export const Story = () => {
   const [match, params] = useRoute("/story/:id");
   const user = useUserStore();
@@ -28,7 +30,7 @@ export const Story = () => {
   useEffect(() => {
     if (story.id) {
       const evtSource = new EventSource(
-        `http://localhost:3000/story/storyEvents?userId=${user.id}`
+        `${API_URL}:3000/story/storyEvents?userId=${user.id}`
       );
       evtSource.onmessage = (event) => {
         const parsedEvent = JSON.parse(event.data) as ServerEvents;

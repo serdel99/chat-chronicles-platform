@@ -28,7 +28,7 @@ const characters = {
   },
   Wizard: {
     name: "Wizard",
-    assetIdle: "/assets/characters/wizard/idle.png",
+    assetIdle: "/assets/characters/wizard/Idle.png",
     steps: 7,
   },
 };

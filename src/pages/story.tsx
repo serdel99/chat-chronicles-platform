@@ -30,7 +30,7 @@ export const Story = () => {
   useEffect(() => {
     if (story.id) {
       const evtSource = new EventSource(
-        `${API_URL}:3000/story/storyEvents?userId=${user.id}`
+        `${API_URL}/story/storyEvents?userId=${user.id}`
       );
       evtSource.onmessage = (event) => {
         const parsedEvent = JSON.parse(event.data) as ServerEvents;
@@ -44,7 +44,6 @@ export const Story = () => {
   }, [story.id]);
 
   useValidateAuth();
-
 
   return (
     <div className="mt-10 mx-auto flex-1 gap-4 text-base md:gap-5 lg:gap-6 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem]">

@@ -1,50 +1,34 @@
-import vampireIdle from "../assets/characters/vampire/Idle.png";
-import vampireRun from "../assets/characters/vampire/Run.png";
-
-import samuraiIdle from "../assets/characters/samurai/Idle.png";
-import soldierIdle from "../assets/characters/soldier/Idle.png";
-import warriorIdle from "../assets/characters/warrior/Idle.png";
-import robotIdle from "../assets/characters/robot/Idle.png";
-import knigthWalkIdle from "../assets/characters/knight/Walk.png";
-import whizardIdle from "../assets/characters/wizard/idle.png";
-
 const characters = {
   Vampire: {
     name: "Vampire",
-    assetIdle: vampireIdle,
-    assetHover: vampireRun,
+    assetIdle: "/assets/characters/vampire/Idle.png",
     steps: 5,
   },
   Samurai: {
     name: "Samurai",
-    assetIdle: samuraiIdle,
-    assetHover: knigthWalkIdle,
+    assetIdle: "/assets/characters/samurai/Idle.png",
     id: "default",
     steps: 5,
   },
   Soldier: {
     name: "Soldier",
-    assetIdle: soldierIdle,
-    assetHover: knigthWalkIdle,
+    assetIdle: "/assets/characters/soldier/Idle.png",
     id: "soldier",
     steps: 9,
   },
   Warrior: {
     name: "Warrior",
-    assetIdle: warriorIdle,
-    assetHover: knigthWalkIdle,
+    assetIdle: "/assets/characters/warrior/Idle.png",
     steps: 5,
   },
   Robot: {
     name: "Robot",
-    assetIdle: robotIdle,
-    assetHover: knigthWalkIdle,
+    assetIdle: "/assets/characters/robot/Idle.png",
     steps: 6,
   },
   Wizard: {
     name: "Wizard",
-    assetIdle: whizardIdle,
-    assetHover: whizardIdle,
+    assetIdle: "/assets/characters/wizard/idle.png",
     steps: 7,
   },
 };

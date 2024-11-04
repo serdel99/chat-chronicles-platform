@@ -22,7 +22,6 @@ import { useTwitchApi } from "@/services/twitch";
 import { Button } from "../ui/button";
 import { redirectTwichAuth } from "@/hooks/useValidateAuth";
 import { useStoryList } from "@/store/storyList";
-import { useStoryStore } from "@/store/story";
 import { useLocation } from "wouter";
 
 export function AppSidebar() {
@@ -52,7 +51,10 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader>
-        <h2 className="text-lg font-semibold">TwitchBattles</h2>
+        <div className="flex items-center">
+          <img className=" w-[30px] h-[30px] mr-2" src="/icon-64.png" />
+          <h2 className="text-lg font-semibold">Arena Bragis</h2>
+        </div>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>

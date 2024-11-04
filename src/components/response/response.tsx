@@ -48,12 +48,7 @@ const Response = ({
       <div className="mx-auto flex flex-1 gap-4 text-base md:gap-5 lg:gap-6 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem] ">
         <div className="flex-shrink-0 ">
           <div className="w-[40px] h-[40px] flex justify-center items-center">
-            <TrainFront
-              width={25}
-              height={25}
-              strokeWidth={3}
-              color="#828282"
-            />
+            <img src="/icon-64.png" />
           </div>
         </div>
         <div className="w-full">

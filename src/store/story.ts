@@ -34,7 +34,7 @@ type StoryActs = {
     isLoading: boolean
 }
 
-type StoryStoreState = {
+export type StoryStoreState = {
     id?: number,
     hero?: string,
     hero_name?: string
@@ -52,8 +52,6 @@ type StoryStoreState = {
     isDataLoaded: boolean,
 }
 
-
-
 type StoryStoreActions = {
     addResponse: (Response: Omit<StoryActs, "isLoading">) => void
     addPollResponse: (pollId: string, response: PollResponse) => void,
@@ -63,23 +61,29 @@ type StoryStoreActions = {
     setDataLoaded: () => void
     setContext: (context: string) => void
     startLoadingResponse: () => void,
+    resetStore: () => void
+    loadStory: (story: StoryStoreState) => void,
     setInitStory: ({ enemy, hero_name, enemy_name }: { enemy: string, hero_name: string, enemy_name: string }) => void
 }
 
 export type StoryStore = StoryStoreState & StoryStoreActions
 
-export const useStoryStore = create(persist(subscribeWithSelector<StoryStore>(
+const initalStore = {
+    lang: window.navigator.language || 'en',
+    storyId: undefined,
+    story_acts: [],
+    isDataLoaded: false,
+    powerups: {
+        "ENEMY_DEFENSE": [],
+        "ENEMY_POWER_ATTACK_UP": [],
+        "HERO_DEFENSE": [],
+        "HERO_POWER_ATTACK_UP": []
+    },
+}
+
+export const useStoryStore = create(subscribeWithSelector<StoryStore>(
     (set) => ({
-        lang: window.navigator.language || 'en',
-        storyId: undefined,
-        story_acts: [],
-        isDataLoaded: false,
-        powerups: {
-            "ENEMY_DEFENSE": [],
-            "ENEMY_POWER_ATTACK_UP": [],
-            "HERO_DEFENSE": [],
-            "HERO_POWER_ATTACK_UP": []
-        },
+        ...initalStore,
         addPollResponse: (pollId, response) => {
             set(state => {
                 const updatedActs = state.story_acts.map((storyAct) => {
@@ -121,17 +125,11 @@ export const useStoryStore = create(persist(subscribeWithSelector<StoryStore>(
         setInitStory({ hero_name, enemy_name, enemy }) {
             set(state => ({ ...state, hero_name, enemy_name, enemy }))
         },
-    })),
-    {
-        name: "currentStory",
-        storage: createJSONStorage(() => localStorage),
-        partialize: (state) => Object.fromEntries(
-            Object.entries(state).filter(([key]) => !['isDataLoaded'].includes(key)),
-        ),
-        onRehydrateStorage: () => {
-            return (state, error) => {
-                state?.setDataLoaded();
-            }
+        loadStory: (story: StoryStoreState) => {
+            set(story)
         },
-    }
-));
+        resetStore: () => {
+            set(initalStore)
+        }
+    })),
+);

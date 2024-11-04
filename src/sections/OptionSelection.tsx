@@ -72,6 +72,8 @@ export const OptionSelection = ({
     story.addResponse(responseApi.data);
   };
 
+  console.log(isDataLoaded);
+
   return (
     <div ref={element}>
       <Response

@@ -17,6 +17,14 @@ type AddUserParams = {
 
 }
 
+const initalState = {
+    id: undefined,
+    display_name: undefined,
+    profile_image_url: undefined,
+    access_token: undefined,
+    id_token: undefined
+}
+
 type UserStoreActions = {
     addUser: ({
         id,
@@ -24,6 +32,7 @@ type UserStoreActions = {
         profile_image_url,
     }: AddUserParams) => void
     addAccessToken: (access_token: string, id_token: string) => void
+    logout: () => void;
 }
 
 type StoryStore = User & UserStoreActions
@@ -46,6 +55,7 @@ export const useUserStore = create(
                     profile_image_url,
                 }))
             },
+            logout: () => { set(initalState) }
         })),
         { name: "twitch-user", storage: createJSONStorage(() => localStorage) }
     ),

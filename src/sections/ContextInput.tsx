@@ -20,14 +20,15 @@ export const ContextInput = ({ isDataLoaded }: Props) => {
       url: "/story/init",
       method: "POST",
     },
-    { manual: true }
+    {
+      manual: true,
+    }
   );
 
   const handleOnSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
 
-    
     story.startLoadingResponse();
 
     const response = await initStoryApi({

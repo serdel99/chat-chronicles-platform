@@ -7,12 +7,23 @@ import { useValidateAuth } from "@/hooks/useValidateAuth";
 import { useStoryStore } from "@/store/story";
 import { OptionSelection } from "@/sections/OptionSelection";
 
-import { useUserStore } from "./store/user";
-import { handleServerEvent, ServerEvents } from "./store/utils";
+import { useUserStore } from "../store/user";
+import { handleServerEvent, ServerEvents } from "../store/utils";
+import { useRoute } from "wouter";
+import { useStoryList } from "@/store/storyList";
 
-const App = () => {
+export const Story = () => {
+  const [match, params] = useRoute("/story/:id");
   const user = useUserStore();
   const story = useStoryStore();
+  const storyList = useStoryList();
+
+  useEffect(() => {
+    if (match) {
+      const storyLoad = storyList.stories[params.id as unknown as number];
+      story.loadStory({ ...storyLoad, isDataLoaded: true });
+    }
+  }, [params?.id]);
 
   useEffect(() => {
     if (story.id) {
@@ -32,6 +43,8 @@ const App = () => {
 
   useValidateAuth();
 
+  console.log(story);
+
   return (
     <div className="mt-10 mx-auto flex-1 gap-4 text-base md:gap-5 lg:gap-6 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem]">
       <GallerySelection isDataLoaded={story.isDataLoaded} />
@@ -39,7 +52,7 @@ const App = () => {
       {story.hero && <ContextInput isDataLoaded={story.isDataLoaded} />}
 
       {story.story_acts?.map(
-        ({ data, id, pollResponse, isDataLoaded, isLoading, type }, index) => {
+        ({ data, id, pollResponse, isLoading, type }, index) => {
           const Component =
             type === "final_act" ? FinishStorySelection : OptionSelection;
 
@@ -58,7 +71,7 @@ const App = () => {
               heroHealt={data?.hero_healt}
               hero={story.hero!}
               isLoading={isLoading}
-              isDataLoaded={Boolean(isDataLoaded)}
+              isDataLoaded={Boolean(story.isDataLoaded)}
               isLastResponse={story.story_acts?.length === index + 1}
             />
           );
@@ -67,5 +80,3 @@ const App = () => {
     </div>
   );
 };
-
-export default App;

@@ -5,8 +5,6 @@ import axios from 'axios'
 
 import { useUserStore } from '@/store/user'
 
-
-
 export const useAxios = makeUseAxios({
     axios: axios.create({
         baseURL: 'http://localhost:3000',

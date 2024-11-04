@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-
+import { io } from "socket.io-client";
 import { GallerySelection } from "@/sections/CharacterSelection";
 import { ContextInput } from "@/sections/ContextInput";
 import { FinishStorySelection } from "@/sections/FinishStorySection";
@@ -13,6 +13,7 @@ import { useRoute } from "wouter";
 import { useStoryList } from "@/store/storyList";
 
 const API_URL = import.meta.env.VITE_API_URL;
+const WS_URL = import.meta.env.VITE_NOTIFICATION_API_URL;
 
 export const Story = () => {
   const [match, params] = useRoute("/story/:id");
@@ -28,23 +29,32 @@ export const Story = () => {
   }, [params?.id]);
 
   useEffect(() => {
-    if (story.id) {
-      const evtSource = new EventSource(
-        `${API_URL}/story/storyEvents?userId=${user.id}`
-      );
-      evtSource.onmessage = (event) => {
-        const parsedEvent = JSON.parse(event.data) as ServerEvents;
-        handleServerEvent(story, parsedEvent);
-      };
-      evtSource.onopen = () => {
-        console.log("Open sse");
-      };
-      return () => evtSource.close();
-    }
+    const socket = io(WS_URL, {
+      extraHeaders: {
+        Authorization: user.id_token || "",
+      },
+    });
+
+    socket.on("connect", () => {
+      console.log("Socket conected");
+    });
+
+    socket.on("notification", (event) => {
+      const parsedEvent = event as ServerEvents;
+
+      handleServerEvent(story, parsedEvent);
+    });
+
+    socket.on("disconnect", () => {
+      console.log("Socket disconect");
+    });
+
+    return () => {
+      socket.disconnect();
+    };
   }, [story.id]);
 
   useValidateAuth();
-
 
   return (
     <div className="mt-10 mx-auto flex-1 gap-4 text-base md:gap-5 lg:gap-6 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem]">

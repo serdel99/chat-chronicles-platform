@@ -13,7 +13,7 @@ export const redirectTwichAuth = () => {
   url.searchParams.append("redirect_uri", redirectUrl);
   url.searchParams.append(
     "scope",
-    "channel:manage:polls channel.chat.message channel.channel_points_custom_reward_redemption.add"
+    "channel:manage:polls user:read:chat user:bot channel:bot channel:manage:redemptions"
   );
   url.searchParams.append("response_type", "id_token token");
 

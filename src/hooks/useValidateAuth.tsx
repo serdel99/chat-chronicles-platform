@@ -1,6 +1,6 @@
 import { useAxios, UserResponse } from "@/services/api";
 import { useUserStore } from "@/store/user";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useLocation } from "wouter";
 
 const clientId = import.meta.env.VITE_TWITCH_CLIENT_ID;
@@ -11,7 +11,10 @@ export const redirectTwichAuth = () => {
 
   url.searchParams.append("client_id", clientId);
   url.searchParams.append("redirect_uri", redirectUrl);
-  url.searchParams.append("scope", "openid channel:manage:polls");
+  url.searchParams.append(
+    "scope",
+    "channel:manage:polls channel.chat.message channel.channel_points_custom_reward_redemption.add"
+  );
   url.searchParams.append("response_type", "id_token token");
 
   window.location.href = url.href;

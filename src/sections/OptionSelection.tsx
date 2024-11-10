@@ -51,7 +51,7 @@ export const OptionSelection = ({
   const story = useStoryStore();
   const element = useFocusResponse();
 
-  const [_, generate] = useAxios<GenerateActResponse>(
+  const [{ loading, response: data }, generate] = useAxios<GenerateActResponse>(
     { url: `/story/${story.id}/generate`, method: "POST" },
     { manual: true }
   );
@@ -60,18 +60,25 @@ export const OptionSelection = ({
     response?.choices.reduce((count, choice) => count + choice.votes, 0) ?? 1;
 
   const onClickContinue = async () => {
-    story.startLoadingResponse();
-    const winnerOption = response?.choices.reduce((maxObj, currentObj) =>
-      currentObj.votes > maxObj.votes ? currentObj : maxObj
-    );
-    const responseApi = await generate({
-      data: {
-        selectedOption: winnerOption?.title,
-        lang: story.lang,
-      },
-    });
-    story.addResponse(responseApi.data);
+    try {
+      story.startLoadingResponse();
+      const winnerOption = response?.choices.reduce((maxObj, currentObj) =>
+        currentObj.votes > maxObj.votes ? currentObj : maxObj
+      );
+      const responseApi = await generate({
+        data: {
+          selectedOption: winnerOption?.title,
+          lang: story.lang,
+        },
+      });
+      story.addResponse(responseApi.data);
+    } catch (e) {
+      console.error(e);
+      story.disableLoading();
+    }
   };
+
+  console.log(isLastResponse);
 
   return (
     <div ref={element}>
@@ -136,7 +143,11 @@ export const OptionSelection = ({
         </Card>
         {response && (
           <div className="flex justify-end mt-5">
-            <Button size="lg" onClick={onClickContinue}>
+            <Button
+              size="lg"
+              onClick={onClickContinue}
+              disabled={loading || Boolean(data) || !isLastResponse}
+            >
               Continue
             </Button>
           </div>

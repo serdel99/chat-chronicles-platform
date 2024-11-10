@@ -3,22 +3,37 @@ import { makeUseAxios } from 'axios-hooks'
 
 import axios from 'axios'
 
+import { toast } from "react-toastify";
+
 import { useUserStore } from '@/store/user'
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-export const useAxios = makeUseAxios({
-    axios: axios.create({
-        baseURL: API_URL,
 
-        transformRequest: function (data, headers) {
-            const { id_token, access_token } = useUserStore.getState()
-            headers['Authorization'] = id_token
-            headers['x-twitch-token'] = access_token
-            headers['Content-Type'] = "application/json"
-            return JSON.stringify(data)
-        }
+
+const axiosInstance = axios.create({
+    baseURL: API_URL,
+
+    transformRequest: function (data, headers) {
+        const { id_token, access_token } = useUserStore.getState()
+        headers['Authorization'] = id_token
+        headers['x-twitch-token'] = access_token
+        headers['Content-Type'] = "application/json"
+        return JSON.stringify(data)
+    }
+})
+
+axiosInstance.interceptors.response.use((data) => { return data },
+    (error) => {
+        toast.error(error.message ?? "Unexpected Error", {
+            position: "bottom-right",
+        })
+
+        return Promise.reject(error)
     })
+
+export const useAxios = makeUseAxios({
+    axios: axiosInstance
 })
 
 export type InitStoryResponse = {

@@ -29,29 +29,30 @@ export const Story = () => {
   }, [params?.id]);
 
   useEffect(() => {
-    const socket = io(WS_URL, {
-      extraHeaders: {
-        Authorization: user.id_token || "",
-      },
-    });
+    if (story.id) {
+      const socket = io(WS_URL, {
+        extraHeaders: {
+          Authorization: user.id_token || "",
+        },
+      });
 
-    socket.on("connect", () => {
-      console.log("Socket conected");
-    });
+      socket.on("connect", () => {
+        console.log("Socket conected");
+      });
 
-    socket.on("notification", (event) => {
-      const parsedEvent = event as ServerEvents;
+      socket.on("notification", (event) => {
+        const parsedEvent = event as ServerEvents;
 
-      handleServerEvent(story, parsedEvent);
-    });
+        handleServerEvent(story, parsedEvent);
+      });
 
-    socket.on("disconnect", () => {
-      console.log("Socket disconect");
-    });
-
-    return () => {
-      socket.disconnect();
-    };
+      socket.on("disconnect", () => {
+        console.log("Socket disconect");
+      });
+      return () => {
+        socket.disconnect();
+      };
+    }
   }, [story.id]);
 
   useValidateAuth();

@@ -63,6 +63,7 @@ type StoryStoreActions = {
     startLoadingResponse: () => void,
     resetStore: () => void
     loadStory: (story: StoryStoreState) => void,
+    disableLoading: () => void
     setInitStory: ({ enemy, hero_name, enemy_name }: { enemy: string, hero_name: string, enemy_name: string }) => void
 }
 
@@ -96,6 +97,9 @@ export const useStoryStore = create(subscribeWithSelector<StoryStore>(
         },
         startLoadingResponse: () => {
             set((state) => ({ ...state, story_acts: [...state.story_acts, { isLoading: true, powerups: [] }] }))
+        },
+        disableLoading: () => {
+            set((state) => ({ ...state, story_acts: [...state.story_acts.filter(({ isLoading }) => !isLoading)] }))
         },
         addResponse: (response) => {
             set((state) => ({
